@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        document.querySelector(".leaflet-popup-pane").addEventListener("load", function(event) {
+          var tagName = event.target.tagName,
+            popup = map._popup;
+          // Also check if flag is already set.
+          if (tagName === "IMG" && popup && !popup._updated) {
+            popup._updated = true; // Set flag to prevent looping.
+            popup.update();
+          }
+        }, true);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_GoogleMaps_0');
+        map.getPane('pane_GoogleMaps_0').style.zIndex = 400;
+        var layer_GoogleMaps_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_GoogleMaps_0;
+        map.addLayer(layer_GoogleMaps_0);
+        map.createPane('pane_1_modified_1');
+        map.getPane('pane_1_modified_1').style.zIndex = 401;
+        var img_1_modified_1 = 'data/1_modified_1.png';
+        var img_bounds_1_modified_1 = [[25.268228425451206,121.49672498965175],[25.310472431669414,121.57911339939342]];
+        var layer_1_modified_1 = new L.imageOverlay(img_1_modified_1,
+                                              img_bounds_1_modified_1,
+                                              {pane: 'pane_1_modified_1'});
+        bounds_group.addLayer(layer_1_modified_1);
+        map.addLayer(layer_1_modified_1);
+        map.createPane('pane_23_modified_2');
+        map.getPane('pane_23_modified_2').style.zIndex = 402;
+        var img_23_modified_2 = 'data/23_modified_2.png';
+        var img_bounds_23_modified_2 = [[25.241342744143537,121.56218876548597],[25.3086998472348,121.67621080701386]];
+        var layer_23_modified_2 = new L.imageOverlay(img_23_modified_2,
+                                              img_bounds_23_modified_2,
+                                              {pane: 'pane_23_modified_2'});
+        bounds_group.addLayer(layer_23_modified_2);
+        map.addLayer(layer_23_modified_2);
+        map.createPane('pane_456_modified_3');
+        map.getPane('pane_456_modified_3').style.zIndex = 403;
+        var img_456_modified_3 = 'data/456_modified_3.png';
+        var img_bounds_456_modified_3 = [[25.154807643883284,121.60833432644937],[25.244388872471333,121.75139863481807]];
+        var layer_456_modified_3 = new L.imageOverlay(img_456_modified_3,
+                                              img_bounds_456_modified_3,
+                                              {pane: 'pane_456_modified_3'});
+        bounds_group.addLayer(layer_456_modified_3);
+        map.addLayer(layer_456_modified_3);
+        map.createPane('pane_789_modified_4');
+        map.getPane('pane_789_modified_4').style.zIndex = 404;
+        var img_789_modified_4 = 'data/789_modified_4.png';
+        var img_bounds_789_modified_4 = [[25.106987952758544,121.73088899597968],[25.16434386189548,121.88630500783461]];
+        var layer_789_modified_4 = new L.imageOverlay(img_789_modified_4,
+                                              img_bounds_789_modified_4,
+                                              {pane: 'pane_789_modified_4'});
+        bounds_group.addLayer(layer_789_modified_4);
+        map.addLayer(layer_789_modified_4);
+        map.createPane('pane_101112_modified_5');
+        map.getPane('pane_101112_modified_5').style.zIndex = 405;
+        var img_101112_modified_5 = 'data/101112_modified_5.png';
+        var img_bounds_101112_modified_5 = [[25.1851799102307,121.39352396483687],[25.27655220933316,121.50158386590427]];
+        var layer_101112_modified_5 = new L.imageOverlay(img_101112_modified_5,
+                                              img_bounds_101112_modified_5,
+                                              {pane: 'pane_101112_modified_5'});
+        bounds_group.addLayer(layer_101112_modified_5);
+        map.addLayer(layer_101112_modified_5);
+        map.createPane('pane_131415_modified_6');
+        map.getPane('pane_131415_modified_6').style.zIndex = 406;
+        var img_131415_modified_6 = 'data/131415_modified_6.png';
+        var img_bounds_131415_modified_6 = [[25.115885241892386,121.37120220695219],[25.185330746412173,121.49060249124693]];
+        var layer_131415_modified_6 = new L.imageOverlay(img_131415_modified_6,
+                                              img_bounds_131415_modified_6,
+                                              {pane: 'pane_131415_modified_6'});
+        bounds_group.addLayer(layer_131415_modified_6);
+        map.addLayer(layer_131415_modified_6);
+        map.createPane('pane_1620_modified_7');
+        map.getPane('pane_1620_modified_7').style.zIndex = 407;
+        var img_1620_modified_7 = 'data/1620_modified_7.png';
+        var img_bounds_1620_modified_7 = [[25.00219910261192,121.4107947431143],[25.117944413375668,121.53271790240139]];
+        var layer_1620_modified_7 = new L.imageOverlay(img_1620_modified_7,
+                                              img_bounds_1620_modified_7,
+                                              {pane: 'pane_1620_modified_7'});
+        bounds_group.addLayer(layer_1620_modified_7);
+        map.addLayer(layer_1620_modified_7);
+        map.createPane('pane_21_modified_8');
+        map.getPane('pane_21_modified_8').style.zIndex = 408;
+        var img_21_modified_8 = 'data/21_modified_8.png';
+        var img_bounds_21_modified_8 = [[24.987853038016485,121.42256250748771],[25.005171578529634,121.44895167264725]];
+        var layer_21_modified_8 = new L.imageOverlay(img_21_modified_8,
+                                              img_bounds_21_modified_8,
+                                              {pane: 'pane_21_modified_8'});
+        bounds_group.addLayer(layer_21_modified_8);
+        map.addLayer(layer_21_modified_8);
+        map.createPane('pane_222324_modified_9');
+        map.getPane('pane_222324_modified_9').style.zIndex = 409;
+        var img_222324_modified_9 = 'data/222324_modified_9.png';
+        var img_bounds_222324_modified_9 = [[24.939990880637776,121.87156187747235],[25.135342560313607,122.01578221044113]];
+        var layer_222324_modified_9 = new L.imageOverlay(img_222324_modified_9,
+                                              img_bounds_222324_modified_9,
+                                              {pane: 'pane_222324_modified_9'});
+        bounds_group.addLayer(layer_222324_modified_9);
+        map.addLayer(layer_222324_modified_9);
+        map.createPane('pane_2529_modified_10');
+        map.getPane('pane_2529_modified_10').style.zIndex = 410;
+        var img_2529_modified_10 = 'data/2529_modified_10.png';
+        var img_bounds_2529_modified_10 = [[24.942992249531507,120.94009907570252],[25.174298302430707,121.40286807007399]];
+        var layer_2529_modified_10 = new L.imageOverlay(img_2529_modified_10,
+                                              img_bounds_2529_modified_10,
+                                              {pane: 'pane_2529_modified_10'});
+        bounds_group.addLayer(layer_2529_modified_10);
+        map.addLayer(layer_2529_modified_10);
+        map.createPane('pane_32_modified_11');
+        map.getPane('pane_32_modified_11').style.zIndex = 411;
+        var img_32_modified_11 = 'data/32_modified_11.png';
+        var img_bounds_32_modified_11 = [[24.086880361806646,120.45506228489066],[24.465433874279665,120.65554625202992]];
+        var layer_32_modified_11 = new L.imageOverlay(img_32_modified_11,
+                                              img_bounds_32_modified_11,
+                                              {pane: 'pane_32_modified_11'});
+        bounds_group.addLayer(layer_32_modified_11);
+        map.addLayer(layer_32_modified_11);
+        map.createPane('pane_31_modified_12');
+        map.getPane('pane_31_modified_12').style.zIndex = 412;
+        var img_31_modified_12 = 'data/31_modified_12.png';
+        var img_bounds_31_modified_12 = [[24.46323342380475,120.60640310169124],[24.738516310665517,120.89973257278645]];
+        var layer_31_modified_12 = new L.imageOverlay(img_31_modified_12,
+                                              img_bounds_31_modified_12,
+                                              {pane: 'pane_31_modified_12'});
+        bounds_group.addLayer(layer_31_modified_12);
+        map.addLayer(layer_31_modified_12);
+        map.createPane('pane_30_modified_13');
+        map.getPane('pane_30_modified_13').style.zIndex = 413;
+        var img_30_modified_13 = 'data/30_modified_13.png';
+        var img_bounds_30_modified_13 = [[24.730250579892637,120.84560138802765],[24.96060814574367,121.030228226656]];
+        var layer_30_modified_13 = new L.imageOverlay(img_30_modified_13,
+                                              img_bounds_30_modified_13,
+                                              {pane: 'pane_30_modified_13'});
+        bounds_group.addLayer(layer_30_modified_13);
+        map.addLayer(layer_30_modified_13);
+        map.createPane('pane_33_modified_modified_14');
+        map.getPane('pane_33_modified_modified_14').style.zIndex = 414;
+        var img_33_modified_modified_14 = 'data/33_modified_modified_14.png';
+        var img_bounds_33_modified_modified_14 = [[23.251040510837147,120.08206065659367],[23.350540593093196,120.21707305907815]];
+        var layer_33_modified_modified_14 = new L.imageOverlay(img_33_modified_modified_14,
+                                              img_bounds_33_modified_modified_14,
+                                              {pane: 'pane_33_modified_modified_14'});
+        bounds_group.addLayer(layer_33_modified_modified_14);
+        map.addLayer(layer_33_modified_modified_14);
+        map.createPane('pane_34_modified_15');
+        map.getPane('pane_34_modified_15').style.zIndex = 415;
+        var img_34_modified_15 = 'data/34_modified_15.png';
+        var img_bounds_34_modified_15 = [[23.18313269986815,120.03701423202402],[23.271737452723666,120.19678838771272]];
+        var layer_34_modified_15 = new L.imageOverlay(img_34_modified_15,
+                                              img_bounds_34_modified_15,
+                                              {pane: 'pane_34_modified_15'});
+        bounds_group.addLayer(layer_34_modified_15);
+        map.addLayer(layer_34_modified_15);
+        map.createPane('pane_35_modified_16');
+        map.getPane('pane_35_modified_16').style.zIndex = 416;
+        var img_35_modified_16 = 'data/35_modified_16.png';
+        var img_bounds_35_modified_16 = [[23.07692372793108,120.02609470332416],[23.184389857964245,120.14142082112973]];
+        var layer_35_modified_16 = new L.imageOverlay(img_35_modified_16,
+                                              img_bounds_35_modified_16,
+                                              {pane: 'pane_35_modified_16'});
+        bounds_group.addLayer(layer_35_modified_16);
+        map.addLayer(layer_35_modified_16);
+        map.createPane('pane_36_modified_modified_17');
+        map.getPane('pane_36_modified_modified_17').style.zIndex = 417;
+        var img_36_modified_modified_17 = 'data/36_modified_modified_17.png';
+        var img_bounds_36_modified_modified_17 = [[22.979958356569263,120.03200584138818],[23.07927401499406,120.21666263336493]];
+        var layer_36_modified_modified_17 = new L.imageOverlay(img_36_modified_modified_17,
+                                              img_bounds_36_modified_modified_17,
+                                              {pane: 'pane_36_modified_modified_17'});
+        bounds_group.addLayer(layer_36_modified_modified_17);
+        map.addLayer(layer_36_modified_modified_17);
+        map.createPane('pane_37_modified_18');
+        map.getPane('pane_37_modified_18').style.zIndex = 418;
+        var img_37_modified_18 = 'data/37_modified_18.png';
+        var img_bounds_37_modified_18 = [[22.88993440972743,120.14096153398351],[22.984290126516733,120.22195189460622]];
+        var layer_37_modified_18 = new L.imageOverlay(img_37_modified_18,
+                                              img_bounds_37_modified_18,
+                                              {pane: 'pane_37_modified_18'});
+        bounds_group.addLayer(layer_37_modified_18);
+        map.addLayer(layer_37_modified_18);
+        map.createPane('pane_38_modified_modified_19');
+        map.getPane('pane_38_modified_modified_19').style.zIndex = 419;
+        var img_38_modified_modified_19 = 'data/38_modified_modified_19.png';
+        var img_bounds_38_modified_modified_19 = [[22.785197322458973,120.17519527915643],[22.900786576484652,120.24731961676892]];
+        var layer_38_modified_modified_19 = new L.imageOverlay(img_38_modified_modified_19,
+                                              img_bounds_38_modified_modified_19,
+                                              {pane: 'pane_38_modified_modified_19'});
+        bounds_group.addLayer(layer_38_modified_modified_19);
+        map.addLayer(layer_38_modified_modified_19);
+        map.createPane('pane_39_modified_20');
+        map.getPane('pane_39_modified_20').style.zIndex = 420;
+        var img_39_modified_20 = 'data/39_modified_20.png';
+        var img_bounds_39_modified_20 = [[22.689892943956615,120.2152704375231],[22.78854467082525,120.29244720409902]];
+        var layer_39_modified_20 = new L.imageOverlay(img_39_modified_20,
+                                              img_bounds_39_modified_20,
+                                              {pane: 'pane_39_modified_20'});
+        bounds_group.addLayer(layer_39_modified_20);
+        map.addLayer(layer_39_modified_20);
+        map.createPane('pane_39_modified_21');
+        map.getPane('pane_39_modified_21').style.zIndex = 421;
+        var img_39_modified_21 = 'data/39_modified_21.png';
+        var img_bounds_39_modified_21 = [[22.689892943956615,120.2152704375231],[22.78854467082525,120.29244720409902]];
+        var layer_39_modified_21 = new L.imageOverlay(img_39_modified_21,
+                                              img_bounds_39_modified_21,
+                                              {pane: 'pane_39_modified_21'});
+        bounds_group.addLayer(layer_39_modified_21);
+        map.addLayer(layer_39_modified_21);
+        map.createPane('pane_40_modified_22');
+        map.getPane('pane_40_modified_22').style.zIndex = 422;
+        var img_40_modified_22 = 'data/40_modified_22.png';
+        var img_bounds_40_modified_22 = [[22.576295150806676,120.24244752051918],[22.68973053928634,120.34761919012689]];
+        var layer_40_modified_22 = new L.imageOverlay(img_40_modified_22,
+                                              img_bounds_40_modified_22,
+                                              {pane: 'pane_40_modified_22'});
+        bounds_group.addLayer(layer_40_modified_22);
+        map.addLayer(layer_40_modified_22);
+        map.createPane('pane_41_modified_23');
+        map.getPane('pane_41_modified_23').style.zIndex = 423;
+        var img_41_modified_23 = 'data/41_modified_23.png';
+        var img_bounds_41_modified_23 = [[22.47244995971629,120.28346173495252],[22.57981444776194,120.44522504323658]];
+        var layer_41_modified_23 = new L.imageOverlay(img_41_modified_23,
+                                              img_bounds_41_modified_23,
+                                              {pane: 'pane_41_modified_23'});
+        bounds_group.addLayer(layer_41_modified_23);
+        map.addLayer(layer_41_modified_23);
+        map.createPane('pane__24');
+        map.getPane('pane__24').style.zIndex = 424;
+        var layer__24 = L.WMS.layer("http://maps.nlsc.gov.tw/S_Maps/wms", "LANDSECT", {
+            pane: 'pane__24',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            attribution: '',
+        });
+        map.addLayer(layer__24);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{"地段外圍圖(段籍圖)": layer__24,"41_modified": layer_41_modified_23,"40_modified": layer_40_modified_22,"39_modified": layer_39_modified_21,"39_modified": layer_39_modified_20,"38_modified_modified": layer_38_modified_modified_19,"37_modified": layer_37_modified_18,"36_modified_modified": layer_36_modified_modified_17,"35_modified": layer_35_modified_16,"34_modified": layer_34_modified_15,"33_modified_modified": layer_33_modified_modified_14,"30_modified": layer_30_modified_13,"31_modified": layer_31_modified_12,"32_modified": layer_32_modified_11,"25~29_modified": layer_2529_modified_10,"22+23+24_modified": layer_222324_modified_9,"21_modified": layer_21_modified_8,"16~20_modified": layer_1620_modified_7,"13+14+15_modified": layer_131415_modified_6,"10+11+12_modified": layer_101112_modified_5,"7+8+9_modified": layer_789_modified_4,"4+5+6_modified": layer_456_modified_3,"2+3_modified": layer_23_modified_2,"1_modified": layer_1_modified_1,"Google Maps": layer_GoogleMaps_0,}).addTo(map);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
